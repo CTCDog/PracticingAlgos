@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class BS{
+    public:
+    bool binarySearch(vector<int> nums, int target);
+    vector<int> sliceVectors(vector<int> nums, int start, int end);
+};
+
+bool BS::binarySearch(vector<int> nums, int target){
+    int VectSize = nums.size();
+    if (VectSize == 1) {
+        if (nums.at(0) == target){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    int midpoint = (VectSize/2)-1;
+    int mid = nums.at(midpoint);
+    
+    if(target > mid){
+        vector<int> newVector = sliceVectors(nums,midpoint+1,nums.size());
+        return binarySearch(newVector,target);
+    }
+    if(target < mid){
+        vector<int> newVector = sliceVectors(nums,0,midpoint);
+        return binarySearch(newVector,target);
+    }
+    if(mid==target){
+        return true;
+    }
+    return -1;
+}
+
+vector<int> BS::sliceVectors(vector<int> nums, int start, int end){
+    vector<int> split={};
+    for (auto i = nums.begin() + start; i != nums.begin() + end; ++i){
+        split.push_back(*i);
+    }  
+    return split;
+}
+
+int main()
+{
+    vector<int> nums {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+    int target = 11;
+    
+    BS sol = BS();
+    cout<<sol.binarySearch(nums,target);
+    return 0;
+}
